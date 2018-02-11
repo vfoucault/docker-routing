@@ -2,204 +2,205 @@ version: '2'
 
 services:
 
-  vnet10simplehost:
+  test-us-admin:
     build: ./
     networks:
-      - vnet10
+      - us-admin
     cap_add:
       - NET_ADMIN
 
-  vnet20simplehost:
+  test-us-staging:
     build: ./
     networks:
-      - vnet11
-
-  vnet30simplehost:
-    build: ./
-    networks:
-      - vnet12
-
-  vnet0simplehost:
-      build: ./
-      networks:
-        - vnet0
-      cap_add:
-        - NET_ADMIN
-
-  vnet1simplehost:
-    build: ./
-    networks:
-      - vnet1
+      - us-staging
     cap_add:
       - NET_ADMIN
 
-  vnet2simplehost:
+  test-us-dev:
     build: ./
     networks:
-      - vnet2
+      - us-dev
     cap_add:
       - NET_ADMIN
 
+  test-eu-admin:
+    build: ./
+    networks:
+      - eu-admin
+    cap_add:
+      - NET_ADMIN
 
+  test-eu-staging:
+    build: ./
+    networks:
+      - eu-staging
+    cap_add:
+      - NET_ADMIN
 
-  router1:
-    container_name: router1
+  test-eu-dev:
+    build: ./
+    networks:
+      - eu-dev
+    cap_add:
+      - NET_ADMIN
+
+  eu-admin-router:
+    container_name: eu-admin-router
     image: iwaseyusuke/quagga-alpine:latest
-    hostname: router1
+    hostname: eu-admin-router
     command:
       - "ospfd"
       - "bgpd"
     volumes:
-      - "./router1/:/etc/quagga/"
+      - "./eu-admin-router/:/etc/quagga/"
     privileged: true
     tty: true
     cap_add:
       - ALL
     networks:
-      vnet0:
+      eu-admin:
         ipv4_address: 192.168.50.254
-      interco1:
+      eu-interco1:
         ipv4_address: 192.168.10.5
-      interco2:
+      eu-interco2:
         ipv4_address: 192.168.10.14
       interregion1:
         ipv4_address: 10.254.1.5
 
-  router2:
-    container_name: router2
-    hostname: router2
+  eu-staging-router:
+    container_name: eu-staging-router
+    hostname: eu-staging-router
     command:
       - "ospfd"
       - "bgpd"
     privileged: true
     tty: true
     volumes:
-      - "./router2/:/etc/quagga/"
+      - "./eu-staging-router/:/etc/quagga/"
     image: iwaseyusuke/quagga-alpine:latest
     cap_add:
       - ALL
     networks:
-      vnet1:
+      eu-staging:
         ipv4_address: 192.168.51.254
-      interco1:
+      eu-interco1:
         ipv4_address: 192.168.10.6
-      interco3:
+      eu-interco3:
         ipv4_address: 192.168.10.22
 
-  router3:
-    container_name: router3
-    hostname: router3
+  eu-dev-router:
+    container_name: eu-dev-router
+    hostname: eu-dev-router
     command:
       - "ospfd"
       - "bgpd"
     tty: true
     volumes:
-      - "./router3/:/etc/quagga/"
+      - "./eu-dev-router/:/etc/quagga/"
     privileged: true
     image: iwaseyusuke/quagga-alpine:latest
     cap_add:
       - ALL
     networks:
-      vnet2:
+      eu-dev:
         ipv4_address: 192.168.52.254
-      interco2:
+      eu-interco2:
         ipv4_address: 192.168.10.13
-      interco3:
+      eu-interco3:
         ipv4_address: 192.168.10.21
 
-
-  router10:
-    container_name: router10
+  us-admin-router:
+    container_name: us-admin-router
     image: iwaseyusuke/quagga-alpine:latest
-    hostname: router10
+    hostname: us-admin-router
     command:
       - "ospfd"
       - "bgpd"
     volumes:
-      - "./router10/:/etc/quagga/"
+      - "./us-admin-router/:/etc/quagga/"
     privileged: true
     tty: true
     cap_add:
       - ALL
     networks:
-      vnet10:
+      us-admin:
         ipv4_address: 192.168.150.254
-      interco11:
+      us-interco1:
         ipv4_address: 192.168.20.5
-      interco12:
+      us-interco2:
         ipv4_address: 192.168.20.14
       interregion1:
         ipv4_address: 10.254.1.6
 
-  router20:
-    container_name: router20
-    hostname: router20
+  us-staging-router:
+    container_name: us-staging-router
+    hostname: us-staging-router
     command:
       - "ospfd"
       - "bgpd"
     privileged: true
     tty: true
     volumes:
-      - "./router20/:/etc/quagga/"
+      - "./us-staging-router/:/etc/quagga/"
     image: iwaseyusuke/quagga-alpine:latest
     cap_add:
       - ALL
     networks:
-      vnet11:
+      us-staging:
         ipv4_address: 192.168.151.254
-      interco11:
+      us-interco1:
         ipv4_address: 192.168.20.6
-      interco13:
+      us-interco3:
         ipv4_address: 192.168.20.22
 
-  router30:
-    container_name: router30
-    hostname: router30
+  us-dev-router:
+    container_name: us-dev-router
+    hostname: us-dev-router
     command:
       - "ospfd"
       - "bgpd"
     privileged: true
     tty: true
     volumes:
-      - "./router30/:/etc/quagga/"
+      - "./us-dev-router/:/etc/quagga/"
     image: iwaseyusuke/quagga-alpine:latest
     cap_add:
       - ALL
     networks:
-      vnet12:
+      us-dev:
         ipv4_address: 192.168.152.254
-      interco12:
+      us-interco2:
         ipv4_address: 192.168.20.13
-      interco13:
+      us-interco3:
         ipv4_address: 192.168.20.21
 
 networks:
-  vnet0:
+  eu-admin:
     ipam:
       driver: default
       config:
         - subnet: 192.168.50.0/24
-  vnet1:
+  eu-staging:
     ipam:
       driver: default
       config:
         - subnet: 192.168.51.0/24
-  vnet2:
+  eu-dev:
     ipam:
       driver: default
       config:
         - subnet: 192.168.52.0/24
-  vnet10:
+  us-admin:
     ipam:
       driver: default
       config:
         - subnet: 192.168.150.0/24
-  vnet11:
+  us-staging:
     ipam:
       driver: default
       config:
         - subnet: 192.168.151.0/24
-  vnet12:
+  us-dev:
     ipam:
       driver: default
       config:
@@ -209,32 +210,32 @@ networks:
       driver: default
       config:
         - subnet: 10.254.1.0/29
-  interco1:
+  eu-interco1:
     ipam:
       driver: default
       config:
         - subnet: 192.168.10.0/29
-  interco2:
+  eu-interco2:
     ipam:
       driver: default
       config:
         - subnet: 192.168.10.8/29
-  interco3:
+  eu-interco3:
     ipam:
       driver: default
       config:
         - subnet: 192.168.10.16/29
-  interco11:
+  us-interco1:
     ipam:
       driver: default
       config:
         - subnet: 192.168.20.0/29
-  interco12:
+  us-interco2:
     ipam:
       driver: default
       config:
         - subnet: 192.168.20.8/29
-  interco13:
+  us-interco3:
     ipam:
       driver: default
       config:
