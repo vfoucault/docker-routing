@@ -1,0 +1,241 @@
+version: '2'
+
+services:
+
+  vnet10simplehost:
+    build: ./
+    networks:
+      - vnet10
+    cap_add:
+      - NET_ADMIN
+
+  vnet20simplehost:
+    build: ./
+    networks:
+      - vnet11
+
+  vnet30simplehost:
+    build: ./
+    networks:
+      - vnet12
+
+  vnet0simplehost:
+      build: ./
+      networks:
+        - vnet0
+      cap_add:
+        - NET_ADMIN
+
+  vnet1simplehost:
+    build: ./
+    networks:
+      - vnet1
+    cap_add:
+      - NET_ADMIN
+
+  vnet2simplehost:
+    build: ./
+    networks:
+      - vnet2
+    cap_add:
+      - NET_ADMIN
+
+
+
+  router1:
+    container_name: router1
+    image: iwaseyusuke/quagga-alpine:latest
+    hostname: router1
+    command:
+      - "ospfd"
+      - "bgpd"
+    volumes:
+      - "./router1/:/etc/quagga/"
+    privileged: true
+    tty: true
+    cap_add:
+      - ALL
+    networks:
+      vnet0:
+        ipv4_address: 192.168.50.254
+      interco1:
+        ipv4_address: 192.168.10.5
+      interco2:
+        ipv4_address: 192.168.10.14
+      interregion1:
+        ipv4_address: 10.254.1.5
+
+  router2:
+    container_name: router2
+    hostname: router2
+    command:
+      - "ospfd"
+      - "bgpd"
+    privileged: true
+    tty: true
+    volumes:
+      - "./router2/:/etc/quagga/"
+    image: iwaseyusuke/quagga-alpine:latest
+    cap_add:
+      - ALL
+    networks:
+      vnet1:
+        ipv4_address: 192.168.51.254
+      interco1:
+        ipv4_address: 192.168.10.6
+      interco3:
+        ipv4_address: 192.168.10.22
+
+  router3:
+    container_name: router3
+    hostname: router3
+    command:
+      - "ospfd"
+      - "bgpd"
+    tty: true
+    volumes:
+      - "./router3/:/etc/quagga/"
+    privileged: true
+    image: iwaseyusuke/quagga-alpine:latest
+    cap_add:
+      - ALL
+    networks:
+      vnet2:
+        ipv4_address: 192.168.52.254
+      interco2:
+        ipv4_address: 192.168.10.13
+      interco3:
+        ipv4_address: 192.168.10.21
+
+
+  router10:
+    container_name: router10
+    image: iwaseyusuke/quagga-alpine:latest
+    hostname: router10
+    command:
+      - "ospfd"
+      - "bgpd"
+    volumes:
+      - "./router10/:/etc/quagga/"
+    privileged: true
+    tty: true
+    cap_add:
+      - ALL
+    networks:
+      vnet10:
+        ipv4_address: 192.168.150.254
+      interco11:
+        ipv4_address: 192.168.20.5
+      interco12:
+        ipv4_address: 192.168.20.14
+      interregion1:
+        ipv4_address: 10.254.1.6
+
+  router20:
+    container_name: router20
+    hostname: router20
+    command:
+      - "ospfd"
+      - "bgpd"
+    privileged: true
+    tty: true
+    volumes:
+      - "./router20/:/etc/quagga/"
+    image: iwaseyusuke/quagga-alpine:latest
+    cap_add:
+      - ALL
+    networks:
+      vnet11:
+        ipv4_address: 192.168.151.254
+      interco11:
+        ipv4_address: 192.168.20.6
+      interco13:
+        ipv4_address: 192.168.20.22
+
+  router30:
+    container_name: router30
+    hostname: router30
+    command:
+      - "ospfd"
+      - "bgpd"
+    privileged: true
+    tty: true
+    volumes:
+      - "./router30/:/etc/quagga/"
+    image: iwaseyusuke/quagga-alpine:latest
+    cap_add:
+      - ALL
+    networks:
+      vnet12:
+        ipv4_address: 192.168.152.254
+      interco12:
+        ipv4_address: 192.168.20.13
+      interco13:
+        ipv4_address: 192.168.20.21
+
+networks:
+  vnet0:
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.168.50.0/24
+  vnet1:
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.168.51.0/24
+  vnet2:
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.168.52.0/24
+  vnet10:
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.168.150.0/24
+  vnet11:
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.168.151.0/24
+  vnet12:
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.168.152.0/24
+  interregion1:
+    ipam:
+      driver: default
+      config:
+        - subnet: 10.254.1.0/29
+  interco1:
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.168.10.0/29
+  interco2:
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.168.10.8/29
+  interco3:
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.168.10.16/29
+  interco11:
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.168.20.0/29
+  interco12:
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.168.20.8/29
+  interco13:
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.168.20.16/29

@@ -1,0 +1,14 @@
+!
+! Zebra configuration saved from vty
+!   2018/02/11 12:50:06
+!
+hostname router1
+password password
+log file /var/log/zebra.log
+log stdout
+log record-priority
+!
+debug bgp updates
+!
+line vty
+!
