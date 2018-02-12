@@ -1,23 +1,29 @@
 !
 ! Zebra configuration saved from vty
-!   2018/02/11 11:56:13
+!   2018/02/11 21:28:47
 !
-hostname router2
+hostname eu-staging-router
 password password
-log file /var/log/zebra.log
 log stdout
 log record-priority
 !
 !
 !
-interface eth0
+interface admin
+ ip ospf network broadcast
  ip ospf area 0.0.0.0
+!
+interface eth0
 !
 interface eth1
  ip ospf area 0.0.0.0
 !
 interface eth2
  ip ospf area 0.0.0.0
+!
+interface gre0
+!
+interface gretap0
 !
 interface ip6tnl0
 !
@@ -29,12 +35,11 @@ router ospf
  ospf router-id 192.168.51.254
  log-adjacency-changes detail
  passive-interface default
- no passive-interface eth0
+ no passive-interface admin
  no passive-interface eth1
  no passive-interface eth2
- network 192.168.51.0/24 area 0
- network 192.168.10.8/29 area 0
- network 192.168.10.16/29 area 0
+ network 192.168.10.16/29 area 0.0.0.0
+ network 192.168.51.0/24 area 0.0.0.0
 !
 line vty
 !

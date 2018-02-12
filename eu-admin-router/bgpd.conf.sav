@@ -1,14 +1,29 @@
 !
 ! Zebra configuration saved from vty
-!   2018/02/11 12:50:06
+!   2018/02/11 21:28:52
 !
-hostname router1
+hostname eu-admin-router
 password password
-log file /var/log/zebra.log
 log stdout
 log record-priority
 !
 debug bgp updates
+!
+router bgp 65001
+ bgp router-id 192.168.50.254
+ bgp always-compare-med
+ bgp graceful-restart
+ redistribute connected
+ redistribute ospf
+ neighbor 10.254.1.6 remote-as 65002
+ neighbor 10.254.1.6 description us_region
+ neighbor 10.254.1.6 capability dynamic
+ neighbor 10.254.1.6 soft-reconfiguration inbound
+ neighbor 10.254.1.6 maximum-prefix 1000000
+!
+ address-family ipv6
+ exit-address-family
+ exit
 !
 line vty
 !

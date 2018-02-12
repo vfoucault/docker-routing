@@ -1,19 +1,22 @@
 !
 ! Zebra configuration saved from vty
-!   2018/02/11 11:56:16
+!   2018/02/11 21:28:47
 !
-hostname router1
+hostname eu-staging-router
 password password
 enable password password
 !
+interface admin
+!
 interface eth0
- ip address 192.168.10.6/29
 !
 interface eth1
- ip address 192.168.51.254/24
 !
 interface eth2
- ip address 192.168.10.22/29
+!
+interface gre0
+!
+interface gretap0
 !
 interface ip6tnl0
 !

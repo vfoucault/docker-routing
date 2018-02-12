@@ -1,11 +1,10 @@
 !
 ! Zebra configuration saved from vty
-!   2018/02/11 12:56:28
+!   2018/02/11 20:40:50
 !
-hostname router1
+hostname us-admin-router
 password password
 enable password password
-log file /var/log/zebra.log
 log stdout
 log record-priority
 !
@@ -16,6 +15,8 @@ interface eth0
 interface eth1
 !
 interface eth2
+!
+interface eth3
 !
 interface ip6tnl0
 !

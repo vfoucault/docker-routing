@@ -1,28 +1,36 @@
 !
 ! Zebra configuration saved from vty
-!   2018/02/11 12:50:06
+!   2018/02/11 21:28:52
 !
-hostname router1
+hostname eu-admin-router
 password password
 enable password password
-log file /var/log/zebra.log
 log stdout
 log record-priority
 !
 debug zebra events
 !
+interface admin
+!
 interface eth0
- ip address 192.168.10.5/29
 !
 interface eth1
- ip address 192.168.50.254/24
 !
 interface eth2
- ip address 192.168.10.14/29
+!
+interface eth3
+!
+interface gre0
+!
+interface gretap0
 !
 interface ip6tnl0
 !
 interface lo
+!
+interface netb
+!
+interface staging
 !
 interface tunl0
 !

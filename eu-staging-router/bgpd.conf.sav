@@ -1,8 +1,8 @@
 !
 ! Zebra configuration saved from vty
-!   2018/02/11 11:56:16
+!   2018/02/11 21:28:47
 !
-hostname router1
+hostname eu-staging-router
 password password
 log stdout
 !
